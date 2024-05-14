@@ -1,0 +1,50 @@
+ALGORITHM Dijkstra
+
+VAR
+    distances: Object // Pour stocker les distances les plus courtes
+    visited: Object // Pour suivre les sommets déjà visités
+    queue: Array // Pour maintenir la file d'attente des sommets à explorer
+
+BEGIN
+    // Initialisation des variables
+    distances = {}
+    visited = {}
+    queue = []
+
+    // Initialisation des distances avec Infinity sauf pour le sommet de départ
+    FOR chaque sommet dans graph
+        distances[sommet] = Infinity
+    ENDFOR
+    distances[start] = 0
+
+    // Ajout du sommet de départ à la file d'attente
+    queue.push(start)
+
+    // Tant que la file d'attente n'est pas vide
+    WHILE queue n'est pas vide
+        // Retirer le sommet avec la distance la plus faible de la file d'attente
+        currentVertex = queue.shift()
+
+        // Si le sommet n'a pas encore été visité
+        IF visited[currentVertex] n'est pas vrai
+            // Marquer le sommet comme visité
+            visited[currentVertex] = vrai
+
+            // Parcourir les voisins du sommet actuel
+            FOR chaque voisin dans graph[currentVertex]
+                // Calculer la distance à ce voisin à travers le sommet actuel
+                distance = distances[currentVertex] + graph[currentVertex][voisin]
+
+                // Mettre à jour la distance si elle est plus petite que la distance actuelle
+                IF distance < distances[voisin]
+                    distances[voisin] = distance
+                    // Ajouter le voisin à la file d'attente pour explorer ses voisins à son tour
+                    queue.push(voisin)
+                ENDIF
+            ENDFOR
+        ENDIF
+    ENDWHILE
+
+    // Renvoyer les distances les plus courtes
+    RETURN distances
+END
